@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-def scrape_reviews(url, max_review = 50):
+def scrape_reviews(url, max_reviews = 50):
     """Scrape reviews from amazon product url,
     url : amazon product url,
-    max_review : maximum number of reviews to scrape,
+    max_reviews : maximum number of reviews to scrape,
     Returns a list of review dictionaries
     """
      # Step 1: Set up headers to look like a real browser
@@ -38,7 +38,7 @@ def scrape_reviews(url, max_review = 50):
     print(f"Found {len(review_containers)} reviews")
 
     # Step 5: Extract data from each review
-    for container in review_containers[:max_review]:
+    for container in review_containers[:max_reviews]:
         review_data = {}
 
         text_element = container.find('div', class_='a-expander-content reviewText review-text-content a-expander-partial-collapse-content')
