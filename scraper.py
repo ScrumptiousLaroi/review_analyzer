@@ -1,4 +1,5 @@
 import requests
+from urllib.robotparser import RobotFileParser
 from bs4 import BeautifulSoup
 import re
 
@@ -8,7 +9,7 @@ def scrape_reviews(url, max_reviews = 50):
     max_reviews : maximum number of reviews to scrape,
     Returns a list of review dictionaries
     """
-     # Step 1: Set up headers to look like a real browser
+     # Set up headers to look like a real browser
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -17,18 +18,27 @@ def scrape_reviews(url, max_reviews = 50):
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1'
     }
-    # Step 2: Make the request
-    try: 
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
-    except requests.RequestException as e:
-        print(f"Error fetching the page: {e}")
+    # Check robots.txt
+    rp = RobotFileParser()
+    rp.set_url("https://www.amazon.in/robots.txt")
+    rp.read()
+    allowed = rp.can_fetch(headers['User-Agent'], url)
+    #  Make the request if allowed
+    if allowed:
+        try: 
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            print(f"Error fetching the page: {e}")
+            return []
+    else:
+        print("Scraping not allowed by robots.txt")
         return []
     
-    # Step 3: Parse with BeautifulSoup  
+    #  Parse with BeautifulSoup  
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Step 4: Find all reviews using your selectors
+    # Find all reviews using your selectors
     reviews = []
     review_containers = soup.find_all('div', class_='a-section celwidget')
 
@@ -57,5 +67,5 @@ def scrape_reviews(url, max_reviews = 50):
         reviews.append(review_data)
 
 
-    # Step 6: Return list of review dictionaries
+    #  Return list of review dictionaries
     return reviews
