@@ -2,6 +2,8 @@
 
 An intelligent Python application that scrapes Amazon product reviews, analyzes sentiment using AI, and generates comprehensive insights. This tool combines web scraping, natural language processing, and modern LLM APIs to provide actionable review analysis in CSV format.
 
+`note - THIS ONLY WORKS FOR AMAZON.IN AND VALIDATES ROBOTS.TXT terms`
+
 ## Features
 
 - **Automated Web Scraping**: Extracts customer reviews, ratings, dates, and metadata from Amazon product pages
