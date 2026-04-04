@@ -17,7 +17,7 @@ def analyze_product_reviews(url, max_reviews = 50):
     print(f"Starting analysis for : {url}")
     print(f"processing upto {max_reviews} reviews")
 
-    # Step 1: Scrape reviews
+    #  Scrape reviews
     print("Scraping reviews...")
     reviews = scrape_reviews(url, max_reviews=max_reviews)
 
@@ -26,7 +26,7 @@ def analyze_product_reviews(url, max_reviews = 50):
         return None
     
     print(f"Found {len(reviews)} reviews. Starting analysis...")
-    # Step 2: Analyze each review
+    #  Analyze each review
     analyzed_reviews = []
 
     for i, review in enumerate(reviews, 1):
@@ -50,7 +50,7 @@ def analyze_product_reviews(url, max_reviews = 50):
         if not analyzed_reviews:
             print("⚠️ No reviews were successfully analyzed!")
             return None
-    # Step 3: Store results in csv
+    #  Store results in csv
     if analyzed_reviews:
         df = pd.DataFrame(analyzed_reviews)
 
